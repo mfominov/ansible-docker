@@ -1,0 +1,9 @@
+{
+  "storage-driver": "devicemapper",
+  "storage-opts": [
+  "dm.thinpooldev=/dev/mapper/{{ docker_thinpool_name }}",
+  "dm.use_deferred_removal=true",
+  "dm.use_deferred_deletion=true"
+  ],
+  "graph": "{{ docker_persistent_storage_path }}"
+}

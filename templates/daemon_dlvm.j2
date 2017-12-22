@@ -1,0 +1,13 @@
+{
+  "storage-driver": "devicemapper",
+  "storage-opts": [
+    "dm.directlvm_device=/dev/{{ device_name }}",
+    "dm.thinp_percent=95",
+    "dm.thinp_metapercent=1",
+    "dm.thinp_autoextend_threshold=80",
+    "dm.thinp_autoextend_percent=20",
+    "dm.directlvm_device_force=true"
+  ],
+  "hosts": ["tcp://{{ hostvars[inventory_hostname]['ansible_'+network_interface]['ipv4']['address'] }}:{{ docker_tcp_port }}", "unix:///var/run/docker.sock"],
+  "graph": "{{ docker_persistent_storage_path }}"
+}

@@ -1,0 +1,65 @@
+---
+
+- name: Edit firewalld for docker port
+  firewalld:
+    port: "{{ docker_tcp_port }}/tcp"
+    permanent: true
+    state: enabled
+  notify: restart firewalld
+  when: env != "prod"
+
+- name: Install dependencies for docker
+  yum:
+   name: "{{ item }}"
+   state: latest
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+    - python-setuptools
+
+- name: Easy_install pip
+  easy_install:
+   name: pip
+   state: present
+
+- name: pip install docker-py
+  pip:
+   name: docker-py
+   state: present
+
+- name: Add repository
+  get_url:
+   url: https://download.docker.com/linux/centos/docker-ce.repo
+   dest: /etc/yum.repos.d/docker-ce.repo
+
+- name: Install docker
+  yum:
+   name: docker-ce
+   state: latest
+
+- name: Remove daemon.json
+  file:
+    path: /etc/docker/daemon.json
+    state: absent
+
+- name: Start docker
+  service:
+   name: docker
+   state: started
+   enabled: yes
+
+- set_fact:
+    daemonJsonFile: daemon_dlvm.j2
+  when: env != "prod"
+
+- set_fact:
+    daemonJsonFile: daemon_thin.j2
+  when: env != "dev"
+
+- name: Copy daemon.json
+  template: 
+   src: "{{ daemonJsonFile }}"
+   dest: /etc/docker/daemon.json
+  notify: restart docker
+
