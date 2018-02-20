@@ -6,7 +6,7 @@
     permanent: true
     state: enabled
   notify: restart firewalld
-  when: env != "prod"
+  when: env != "production"
 
 - name: Install dependencies for docker
   yum:
@@ -51,11 +51,11 @@
 
 - set_fact:
     daemonJsonFile: daemon_dlvm.j2
-  when: env != "prod"
+  when: env != "production"
 
 - set_fact:
     daemonJsonFile: daemon_thin.j2
-  when: env != "dev"
+  when: env != "develop"
 
 - name: Copy daemon.json
   template: 

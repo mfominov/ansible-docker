@@ -2,7 +2,7 @@
 
 docker_tcp_port: "2375"
 network_interface: "ens160"
-env: "dev"
+env: "develop"
 device_name: "sdb"
 volume_group_name: "docker-vg"
 docker_persistent_storage_path: "/u01/docker"
