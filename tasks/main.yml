@@ -63,3 +63,20 @@
    dest: /etc/docker/daemon.json
   notify: restart docker
 
+- cron:
+    name: Cleanup volumes
+    minute: "0"
+    hour: "*/4"
+    job: "docker volume prune -f"
+
+- cron:
+    name: Cleanup images
+    minute: "0"
+    hour: "*/2"
+    job: "docker image prune -af"
+
+- cron:
+    name: Cleanup system
+    minute: "0"
+    hour: "*/2"
+    job: "docker system prune -f"

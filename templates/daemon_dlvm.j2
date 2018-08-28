@@ -8,6 +8,11 @@
     "dm.thinp_autoextend_percent=20",
     "dm.directlvm_device_force=true"
   ],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "100"
+    },
   "hosts": ["tcp://{{ hostvars[inventory_hostname]['ansible_'+network_interface]['ipv4']['address'] }}:{{ docker_tcp_port }}", "unix:///var/run/docker.sock"],
   "graph": "{{ docker_persistent_storage_path }}"
 }

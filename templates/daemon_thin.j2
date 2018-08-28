@@ -1,9 +1,17 @@
 {
   "storage-driver": "devicemapper",
   "storage-opts": [
-  "dm.thinpooldev=/dev/mapper/{{ docker_thinpool_name }}",
-  "dm.use_deferred_removal=true",
-  "dm.use_deferred_deletion=true"
+    "dm.directlvm_device=/dev/{{ device_name }}",
+    "dm.thinp_percent=95",
+    "dm.thinp_metapercent=1",
+    "dm.thinp_autoextend_threshold=80",
+    "dm.thinp_autoextend_percent=20",
+    "dm.directlvm_device_force=true"
   ],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "100"
+    },
   "graph": "{{ docker_persistent_storage_path }}"
 }
